@@ -8,7 +8,7 @@ The direct gate is `scripts/run_direct_tests.py` and runs against the selected `
 | Adversarial | 9 |
 | Property/invariant | 5 |
 | Controlled semantic fixtures | 5 |
-| Mutation catalog | 1 catalog covering 20 mutations |
+| Mutation catalog | 1 catalog covering 21 mutations |
 | Total direct cases | 28 |
 
 Core scenarios include mandate creation, duplicate/version isolation, revocation, exact agent and action-version binding, timestamp boundary semantics, evidence identity substitution, URI/hash/length/address bounds, freeze immutability, snapshot determinism, strict result keys, prompt injection, unavailable/mutated transport, one-shot adjudication, appeal limits, terminal finality, pagination, and authorization readback.
