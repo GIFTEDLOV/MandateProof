@@ -14,8 +14,7 @@ dist/
 .env
 .env.*
 !.env.example
-artifacts/*.json
-artifacts/*.txt
+artifacts/live-*.json
+artifacts/live-*.txt
 reports/
 gltest.config.yaml
-

@@ -1,0 +1,508 @@
+{
+  "ctor": {
+    "kwparams": {},
+    "params": []
+  },
+  "methods": {
+    "adjudicate_appeal": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "adjudicate_case": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "commit_appeal_evidence": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ],
+        [
+          "evidence_id",
+          "string"
+        ],
+        [
+          "kind",
+          "string"
+        ],
+        [
+          "subject_id",
+          "string"
+        ],
+        [
+          "authority",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ],
+        [
+          "sha256",
+          "string"
+        ],
+        [
+          "byte_length",
+          "int"
+        ],
+        [
+          "uri",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "commit_evidence": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ],
+        [
+          "evidence_id",
+          "string"
+        ],
+        [
+          "kind",
+          "string"
+        ],
+        [
+          "subject_id",
+          "string"
+        ],
+        [
+          "authority",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ],
+        [
+          "sha256",
+          "string"
+        ],
+        [
+          "byte_length",
+          "int"
+        ],
+        [
+          "uri",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "contract_info": {
+      "kwparams": {},
+      "params": [],
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "create_mandate": {
+      "kwparams": {},
+      "params": [
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "agent",
+          "address"
+        ],
+        [
+          "counterparty",
+          "address"
+        ],
+        [
+          "version",
+          "int"
+        ],
+        [
+          "policy_artifact_id",
+          "string"
+        ],
+        [
+          "policy_sha256",
+          "string"
+        ],
+        [
+          "policy_byte_length",
+          "int"
+        ],
+        [
+          "policy_uri",
+          "string"
+        ],
+        [
+          "policy_authority",
+          "string"
+        ],
+        [
+          "valid_from",
+          "string"
+        ],
+        [
+          "valid_until",
+          "string"
+        ],
+        [
+          "metadata_digest",
+          "string"
+        ],
+        [
+          "rule_ids",
+          [
+            {
+              "$rep": "string"
+            }
+          ]
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "finalize_case": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "freeze_appeal": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "freeze_case": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "get_action": {
+      "kwparams": {},
+      "params": [
+        [
+          "action_id",
+          "string"
+        ]
+      ],
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_case": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ]
+      ],
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "get_case_count": {
+      "kwparams": {},
+      "params": [],
+      "readonly": true,
+      "ret": "int"
+    },
+    "get_case_evidence": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ],
+        [
+          "start",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "readonly": true,
+      "ret": [
+        {
+          "$rep": {
+            "$dict": "any"
+          }
+        }
+      ]
+    },
+    "get_case_ids": {
+      "kwparams": {},
+      "params": [
+        [
+          "start",
+          "int"
+        ],
+        [
+          "limit",
+          "int"
+        ]
+      ],
+      "readonly": true,
+      "ret": [
+        {
+          "$rep": "string"
+        }
+      ]
+    },
+    "get_mandate": {
+      "kwparams": {},
+      "params": [
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ]
+      ],
+      "readonly": true,
+      "ret": {
+        "$dict": "any"
+      }
+    },
+    "is_action_authorized": {
+      "kwparams": {},
+      "params": [
+        [
+          "action_id",
+          "string"
+        ]
+      ],
+      "readonly": true,
+      "ret": "bool"
+    },
+    "open_appeal": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ],
+        [
+          "basis",
+          "string"
+        ],
+        [
+          "reference",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "open_case": {
+      "kwparams": {},
+      "params": [
+        [
+          "case_id",
+          "string"
+        ],
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "mandate_version",
+          "int"
+        ],
+        [
+          "action_id",
+          "string"
+        ],
+        [
+          "claim",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "register_action": {
+      "kwparams": {},
+      "params": [
+        [
+          "action_id",
+          "string"
+        ],
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "mandate_version",
+          "int"
+        ],
+        [
+          "action_artifact_id",
+          "string"
+        ],
+        [
+          "action_sha256",
+          "string"
+        ],
+        [
+          "action_byte_length",
+          "int"
+        ],
+        [
+          "action_uri",
+          "string"
+        ],
+        [
+          "trace_artifact_id",
+          "string"
+        ],
+        [
+          "trace_sha256",
+          "string"
+        ],
+        [
+          "trace_byte_length",
+          "int"
+        ],
+        [
+          "trace_uri",
+          "string"
+        ],
+        [
+          "occurred_at",
+          "string"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "revoke_mandate": {
+      "kwparams": {},
+      "params": [
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "version",
+          "int"
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    },
+    "supersede_mandate": {
+      "kwparams": {},
+      "params": [
+        [
+          "mandate_id",
+          "string"
+        ],
+        [
+          "new_version",
+          "int"
+        ],
+        [
+          "policy_artifact_id",
+          "string"
+        ],
+        [
+          "policy_sha256",
+          "string"
+        ],
+        [
+          "policy_byte_length",
+          "int"
+        ],
+        [
+          "policy_uri",
+          "string"
+        ],
+        [
+          "policy_authority",
+          "string"
+        ],
+        [
+          "valid_from",
+          "string"
+        ],
+        [
+          "valid_until",
+          "string"
+        ],
+        [
+          "metadata_digest",
+          "string"
+        ],
+        [
+          "rule_ids",
+          [
+            {
+              "$rep": "string"
+            }
+          ]
+        ]
+      ],
+      "payable": false,
+      "readonly": false,
+      "ret": "null"
+    }
+  }
+}
