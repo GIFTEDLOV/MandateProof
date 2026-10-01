@@ -31,7 +31,14 @@ The first and only attempt before fee correction used `genlayer deploy --fee-pre
 - revert reason: `FeeValueMustBeNonZero(1)`
 - contract address: none
 
-No blind rebroadcast was made. The retry is conditioned on the measured explicit fee value above.
+The corrected CLI attempt also printed the explicit fee but still encoded an EVM value of zero and reverted:
+
+- transaction: `0x74d10fc23ae20457f58ea14371ecbf47d1f412b740c3725edc7ec0c6e649e1b6`
+- receipt status: `0x0`
+- revert reason: `FeeValueMustBeNonZero(1)`
+- contract address: none
+
+The cause was isolated to the CLI deploy parameter path: its fee profile was not supplying a complete distribution. A complete deploy fee profile is now recorded at `artifacts/deploy-fee-profile.json`; its read-only estimate reproduces the nonzero fee value above. No blind rebroadcast was made.
 
 ## Qualification status
 
