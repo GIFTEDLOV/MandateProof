@@ -5,8 +5,8 @@ from pathlib import Path
 
 MUTANTS = {
     "M01_remove_agent_authorization": "UNAUTHORIZED_AGENT",
-    "M02_skip_hash_check": "hashlib.sha256(body).hexdigest()",
-    "M03_skip_byte_check": "len(body) != ref[\"byte_length\"]",
+    "M02_skip_hash_check": "hashlib.sha256(body_bytes).hexdigest()",
+    "M03_skip_byte_check": "len(body_bytes) != ref[\"byte_length\"]",
     "M04_allow_post_freeze_evidence": "EVIDENCE_FROZEN",
     "M05_duplicate_adjudication": "INVALID_ADJUDICATION_STATE",
     "M06_trust_leader_schema_only": "_validate_leader_result",

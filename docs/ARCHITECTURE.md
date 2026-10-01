@@ -20,7 +20,7 @@ The mandate principal creates, supersedes, and revokes mandates. Only its exact 
 
 ## Errors
 
-Deterministic business and integrity failures are raised before semantic execution. Nondeterministic failures remain typed as `EVIDENCE_UNAVAILABLE`, `INTEGRITY_ERROR`, `EVIDENCE_TOO_LARGE`, or `MODEL_ERROR`; they never become `AUTHORIZED` or `MATERIAL_BREACH`. Consensus disagreement is represented by the runner’s failed validator path, not by a semantic verdict.
+Deterministic business and integrity failures are raised before semantic execution. Inside the nondeterministic closure, retrieval, integrity, size, and model failures remain classified internally as `EVIDENCE_UNAVAILABLE`, `INTEGRITY_ERROR`, `EVIDENCE_TOO_LARGE`, or `MODEL_ERROR`, then normalize to the bounded safe outcome `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`. This avoids runner-version-specific serialized `UserError` differences while ensuring they never become `AUTHORIZED` or `MATERIAL_BREACH`. Consensus disagreement remains a failed validator path, not a semantic verdict.
 
 ## Appeal
 

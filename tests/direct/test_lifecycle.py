@@ -124,8 +124,10 @@ def test_integrity_mismatch_fails_closed_without_breach(env):
         env.contract.adjudicate_case("c1")
     except Exception:
         pass
-    # Direct harness errors, or a non-result path, leave the frozen snapshot untouched.
-    assert env.contract.get_case("c1")["state"] == "FROZEN"
+    # External integrity failure is a safe, non-adverse semantic outcome.
+    case = env.contract.get_case("c1")
+    assert case["state"] == "ADJUDICATED"
+    assert case["original_verdict"] == "INCONCLUSIVE"
 
 
 def test_exact_key_parser_rejects_extra_keys(env):
@@ -138,6 +140,7 @@ def test_exact_key_parser_rejects_extra_keys(env):
     })
     env.vm._llm_mocks.clear()
     env.vm.mock_llm(".*", env.model_response)
-    with pytest.raises(Exception):
-        env.contract.adjudicate_case("c1")
-    assert env.contract.get_case("c1")["state"] == "FROZEN"
+    env.contract.adjudicate_case("c1")
+    case = env.contract.get_case("c1")
+    assert case["state"] == "ADJUDICATED"
+    assert case["original_verdict"] == "INCONCLUSIVE"

@@ -40,4 +40,6 @@ def test_case_e_mutated_evidence_is_not_adverse_semantics(env):
         env.contract.adjudicate_case("c1")
     except Exception:
         pass
-    assert env.contract.get_case("c1")["state"] == "FROZEN"
+    case = env.contract.get_case("c1")
+    assert case["state"] == "ADJUDICATED"
+    assert case["original_verdict"] == "INCONCLUSIVE"

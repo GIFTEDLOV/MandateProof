@@ -380,6 +380,22 @@ def _result(value: typing.Any, rules: list[str]) -> dict[str, typing.Any]:
     }
 
 
+def _safe_inconclusive() -> dict[str, typing.Any]:
+    """Safe semantic outcome for nondeterministic evidence/model failures.
+
+    External retrieval and model failures are deliberately represented as the
+    non-adverse semantic outcome rather than as a serialized UserError.  This
+    keeps leader/validator result transport stable across Studio-dev runner
+    revisions while ensuring unavailable or malformed evidence can never become
+    AUTHORIZED or MATERIAL_BREACH.
+    """
+    return {
+        "verdict": "INCONCLUSIVE",
+        "reason_code": "INSUFFICIENT_EVIDENCE",
+        "violated_rule_ids": [],
+    }
+
+
 def _fetch_artifact(ref: dict[str, typing.Any]) -> str:
     try:
         response = gl.nondet.web.get(ref["uri"])
@@ -388,12 +404,18 @@ def _fetch_artifact(ref: dict[str, typing.Any]) -> str:
     if response.status < 200 or response.status >= 300 or response.body is None:
         raise gl.vm.UserError("EVIDENCE_UNAVAILABLE")
     body = response.body
-    if len(body) != ref["byte_length"]:
+    if isinstance(body, str):
+        body_bytes = body.encode("utf-8")
+    elif isinstance(body, (bytes, bytearray)):
+        body_bytes = bytes(body)
+    else:
+        raise gl.vm.UserError("EVIDENCE_UNAVAILABLE")
+    if len(body_bytes) != ref["byte_length"]:
         raise gl.vm.UserError("INTEGRITY_ERROR")
-    if hashlib.sha256(body).hexdigest() != ref["sha256"]:
+    if hashlib.sha256(body_bytes).hexdigest() != ref["sha256"]:
         raise gl.vm.UserError("INTEGRITY_ERROR")
     try:
-        return body.decode("utf-8")
+        return body_bytes.decode("utf-8")
     except Exception:
         raise gl.vm.UserError("INTEGRITY_ERROR")
 
@@ -423,27 +445,24 @@ def _prompt(snapshot: dict[str, typing.Any], artifacts: list[dict[str, str]]) ->
 
 
 def _semantic(snapshot: dict[str, typing.Any]) -> dict[str, typing.Any]:
-    artifacts: list[dict[str, str]] = []
-    total = 0
-    for ref in snapshot["artifacts"]:
-        text = _fetch_artifact(ref)
-        total += _bytes_len(text)
-        if total > MAX_SEMANTIC_BYTES:
-            raise gl.vm.UserError("EVIDENCE_TOO_LARGE")
-        artifacts.append({"label": ref["label"], "content": text})
     try:
+        artifacts: list[dict[str, str]] = []
+        total = 0
+        for ref in snapshot["artifacts"]:
+            text = _fetch_artifact(ref)
+            total += _bytes_len(text)
+            if total > MAX_SEMANTIC_BYTES:
+                raise gl.vm.UserError("EVIDENCE_TOO_LARGE")
+            artifacts.append({"label": ref["label"], "content": text})
         # Request text and parse it ourselves so the contract owns the exact-key
         # grammar across runner versions; model output is never trusted as ABI.
         raw = gl.nondet.exec_prompt(_prompt(snapshot, artifacts), response_format="text")
-    except gl.vm.UserError:
-        raise
-    except Exception:
-        raise gl.vm.UserError("MODEL_ERROR")
-    try:
         parsed = json.loads(raw) if isinstance(raw, str) else raw
+        return _result(parsed, snapshot["rule_ids"])
+    except gl.vm.UserError:
+        return _safe_inconclusive()
     except Exception:
-        raise gl.vm.UserError("MODEL_ERROR")
-    return _result(parsed, snapshot["rule_ids"])
+        return _safe_inconclusive()
 
 
 def _evaluate(snapshot: dict[str, typing.Any]) -> dict[str, typing.Any]:
