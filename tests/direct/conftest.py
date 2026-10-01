@@ -94,6 +94,16 @@ def _patch_current_nondet():
         active_vm = wasi_mock.get_vm()
         request = calldata.decode(data)
         response = wasi_mock._handle_gl_call(active_vm, request)
+        # The pinned direct harness mock returns a dict for JSON prompts, while
+        # the v0.3.0-rc7 decoder expects the JSON response payload as text.
+        if (
+            isinstance(response, dict)
+            and isinstance(response.get("ok"), dict)
+            and isinstance(request, dict)
+            and isinstance(request.get("ExecPrompt"), dict)
+            and request["ExecPrompt"].get("response_format") == "json2"
+        ):
+            response["ok"] = json.dumps(response["ok"], separators=(",", ":"))
         if response is None:
             return 2**32 - 1
         encoded = response if isinstance(response, bytes) else calldata.encode(response)

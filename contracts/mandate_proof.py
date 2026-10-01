@@ -454,9 +454,10 @@ def _semantic(snapshot: dict[str, typing.Any]) -> dict[str, typing.Any]:
             if total > MAX_SEMANTIC_BYTES:
                 raise gl.vm.UserError("EVIDENCE_TOO_LARGE")
             artifacts.append({"label": ref["label"], "content": text})
-        # Request text and parse it ourselves so the contract owns the exact-key
-        # grammar across runner versions; model output is never trusted as ABI.
-        raw = gl.nondet.exec_prompt(_prompt(snapshot, artifacts), response_format="text")
+        # Request structured JSON, then parse/validate it ourselves so the
+        # contract owns the exact-key grammar across runner versions; model
+        # output is never trusted as ABI.
+        raw = gl.nondet.exec_prompt(_prompt(snapshot, artifacts), response_format="json")
         parsed = json.loads(raw) if isinstance(raw, str) else raw
         return _result(parsed, snapshot["rule_ids"])
     except gl.vm.UserError:
