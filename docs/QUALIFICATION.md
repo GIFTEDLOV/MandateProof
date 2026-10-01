@@ -1,6 +1,6 @@
 # Studio-dev qualification
 
-Status at source freeze: preflight complete; deployment not yet broadcast.
+Status: preflight complete; one fee-invalid deployment attempt is recorded; corrected deployment retry is separately fee-qualified and still pending.
 
 ## Preflight facts
 
@@ -18,9 +18,20 @@ Status at source freeze: preflight complete; deployment not yet broadcast.
 | Deployer balance | `75561.260810361573380482 GEN` at preflight |
 | Fee baseline | CLI `estimate-fees --json` returned `feeValue=100000000000010352` wei for the default profile |
 | Faucet | not used |
-| Deployment | not attempted in this checkpoint |
+| Deployment preflight | first CLI attempt omitted a nonzero fee value; corrected explicit fee value is now measured below |
 
-The fee baseline is not a deployment authorization. Before broadcast, the exact deploy fee must be estimated from the final deployable source/profile and checked against the selected deployer balance. Deployment must broadcast exactly once, persist the transaction hash immediately, reconcile that same hash, and require finality, successful execution, contract address, schema readback, and `contract_info` readback.
+The fee baseline is not a deployment authorization. The measured explicit fee value for the corrected deployment retry is `100000000000010352` wei, below the selected deployer balance. Deployment must broadcast exactly once for the corrected parameters, persist the transaction hash immediately, reconcile that same hash, and require finality, successful execution, contract address, schema readback, and `contract_info` readback.
+
+## Historical failed attempt
+
+The first and only attempt before fee correction used `genlayer deploy --fee-preset standard` without an explicit fee value. Studio-dev recorded the same hash on read-only receipt lookup:
+
+- transaction: `0xb2482901489bc50d86ba3a2a08ac8f89f1ed609935b3d9b10d7239a8f0c437e6`
+- receipt status: `0x0`
+- revert reason: `FeeValueMustBeNonZero(1)`
+- contract address: none
+
+No blind rebroadcast was made. The retry is conditioned on the measured explicit fee value above.
 
 ## Qualification status
 
@@ -30,4 +41,4 @@ Controlled semantic proof: PASS for AUTHORIZED, MATERIAL_BREACH, INCONCLUSIVE, p
 
 Network schema proof: PASS.
 
-Live contract proof: pending deployment authorization and exact fee simulation.
+Live contract proof: pending corrected deployment.
