@@ -1,0 +1,1 @@
+Trace: checked invoice class, amount=500, and recorded approval.
