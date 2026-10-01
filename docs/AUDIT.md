@@ -2,11 +2,11 @@
 
 Audit date: 2026-10-01
 
-Audited implementation commit: `147251e6aceb146c3021f1da4d086930141c4c2e`
+Audited implementation commit: `e2dd07cc1429435025a2bd5f3491c3ba3204eb56`
 
-Audited contract SHA-256: `0ec9129b112eb8af6589c5b163b30e850a89e6400a16a56eb71efbf09f0ab916`
+Audited contract SHA-256: `e9bcbb24f4aa11151ea58e03d9a130bd6acd9f8fbe3aa8a62990b1be3d9e4eba`
 
-The contract source was frozen before this review. No contract patch was made during the independent audit.
+This is the post-qualification remediation audit. The contract source was frozen before this review; no contract patch was made during this audit.
 
 ## Review checklist
 
@@ -25,9 +25,9 @@ The contract source was frozen before this review. No contract patch was made du
 | Timestamps | PASS | Runtime message timestamp is parsed and normalized; chronological comparisons use datetime values; `valid_until` is inclusive. |
 | Pagination | PASS | Indexed case/evidence arrays with bounded page limits; case count is capped. |
 | Appeals | PASS | One bounded appeal; new snapshot; original adjudication retained; terminal appeal result is canonical. |
-| Error domains | PASS | Deterministic validation errors remain distinct from evidence unavailable, integrity, model, and consensus paths. |
+| Error domains | PASS after A-04 | Deterministic validation errors remain distinct. Nondeterministic retrieval, integrity, size, and model failures normalize to the safe `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` result rather than serializing runner-specific `UserError` objects. |
 | Runtime/schema compatibility | PASS with finding A-01 | Local pinned harness and Studio-dev schema endpoint were both probed; see A-01. |
-| Deployment consequence and value/fee | NOT YET QUALIFIED | Deployment is intentionally after local audit and source freeze. No funds were sent and no transaction was broadcast in this audit. |
+| Deployment consequence and value/fee | PASS with qualification record | The first deployment reached schema and contract-info readback; its semantic error path exposed A-04 during live qualification. Replacement deployment remains subject to the frozen-source gates. |
 | Provenance and secret hygiene | PASS | Source SHA and schema artifact recorded; repository secret scan found no credential pattern. |
 
 ## Findings
@@ -58,14 +58,23 @@ The contract source was frozen before this review. No contract patch was made du
 - Remediation: run an external mutation engine in a future CI expansion if its GenVM process isolation is reliable.
 - Status: accepted for the time-boxed release; explicit in `docs/TEST_MATRIX.md`.
 
+### A-04 - MEDIUM - serialized UserError incompatibility on semantic failure path
+
+- Subsystem: runtime compatibility / nondeterministic error handling.
+- Evidence: live transaction `0xa7c114cd7843240adde94a07b9cefdc0bba744fc5369568979628c45f16d73f9` reached `UNDETERMINED`; the leader returned `MODEL_ERROR`, while validators reported `UserError.__init__() missing 1 required positional argument: 'data'` and VM error disagreement. The case remained `FROZEN` and no result was stored.
+- Reproduction: adjudicate a frozen Studio-dev snapshot whose external/model path produces a typed nondeterministic failure under the pre-remediation source.
+- Impact: a safe failure could become consensus-undetermined instead of a canonical safe outcome, preventing finalization and live qualification.
+- Remediation: the hardened source classifies the failure internally and returns the bounded, non-adverse result `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; it also accepts either byte or UTF-8 string web bodies before exact length and SHA-256 verification. The local adversarial and semantic suites pass after the change.
+- Status: remediated in `e2dd07c`; replacement deployment must prove the path live.
+
 ## Severity disposition
 
 Critical: 0
 
 High: 0
 
-Medium: 1, A-01 mitigated pending live preflight
+Medium: 2, A-01 mitigated and A-04 remediated pending replacement live proof
 
 Low: 2, A-02 and A-03 accepted and documented
 
-The contract was not patched after audit because no Critical or High finding was identified. The only Medium finding is a release qualification requirement and is addressed by the schema/runtime preflight gates, not by changing contract semantics.
+No Critical or High findings remain. A-04 was remediated before the replacement release audit; the replacement source remains frozen until live qualification is complete.
