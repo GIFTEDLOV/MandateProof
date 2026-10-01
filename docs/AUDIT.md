@@ -2,9 +2,9 @@
 
 Audit date: 2026-10-01
 
-Audited implementation commit: `e2dd07cc1429435025a2bd5f3491c3ba3204eb56`
+Audited implementation commit: `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`
 
-Audited contract SHA-256: `e9bcbb24f4aa11151ea58e03d9a130bd6acd9f8fbe3aa8a62990b1be3d9e4eba`
+Audited contract SHA-256: `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462`
 
 This is the post-qualification remediation audit. The contract source was frozen before this review; no contract patch was made during this audit.
 
@@ -25,7 +25,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 | Timestamps | PASS | Runtime message timestamp is parsed and normalized; chronological comparisons use datetime values; `valid_until` is inclusive. |
 | Pagination | PASS | Indexed case/evidence arrays with bounded page limits; case count is capped. |
 | Appeals | PASS | One bounded appeal; new snapshot; original adjudication retained; terminal appeal result is canonical. |
-| Error domains | PASS after A-04 | Deterministic validation errors remain distinct. Nondeterministic retrieval, integrity, size, and model failures normalize to the safe `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` result rather than serializing runner-specific `UserError` objects. |
+| Error domains | PASS after A-04/A-05 | Deterministic validation errors remain distinct. Nondeterministic retrieval, integrity, size, and model failures normalize to the safe `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` result rather than serializing runner-specific `UserError` objects; structured JSON output is requested for reliable semantic success. |
 | Runtime/schema compatibility | PASS with finding A-01 | Local pinned harness and Studio-dev schema endpoint were both probed; see A-01. |
 | Deployment consequence and value/fee | PASS with qualification record | The first deployment reached schema and contract-info readback; its semantic error path exposed A-04 during live qualification. Replacement deployment remains subject to the frozen-source gates. |
 | Provenance and secret hygiene | PASS | Source SHA and schema artifact recorded; repository secret scan found no credential pattern. |
@@ -67,14 +67,23 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Remediation: the hardened source classifies the failure internally and returns the bounded, non-adverse result `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; it also accepts either byte or UTF-8 string web bodies before exact length and SHA-256 verification. The local adversarial and semantic suites pass after the change.
 - Status: remediated in `e2dd07c`; replacement deployment must prove the path live.
 
+### A-05 - MEDIUM - text response mode was too permissive for live JSON qualification
+
+- Subsystem: semantic model result transport.
+- Evidence: the first remediated live adjudication finalized safely as `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` even though the authenticated fixture was intentionally authorized. The local runner showed that its JSON response decoder expects a serialized JSON payload, while the prior text mode left the result shape dependent on runner behavior.
+- Reproduction: run the authorized fixture against the `e2dd07c` replacement source using `response_format="text"`.
+- Impact: valid semantic decisions could be conservatively downgraded to `INCONCLUSIVE`, reducing live qualification quality without creating an adverse verdict.
+- Remediation: `b1dfd2a` requests `response_format="json"` and retains the contract-owned exact-key parser; the direct harness bridge serializes only its mock JSON payload to match the pinned decoder. Local semantic and adversarial suites pass.
+- Status: remediated before the final replacement deployment; live authorized proof pending.
+
 ## Severity disposition
 
 Critical: 0
 
 High: 0
 
-Medium: 2, A-01 mitigated and A-04 remediated pending replacement live proof
+Medium: 3, A-01 mitigated, A-04 remediated, and A-05 remediated pending final replacement live proof
 
 Low: 2, A-02 and A-03 accepted and documented
 
-No Critical or High findings remain. A-04 was remediated before the replacement release audit; the replacement source remains frozen until live qualification is complete.
+No Critical or High findings remain. A-04 and A-05 were remediated before the final replacement release audit; the replacement source remains frozen until live qualification is complete.

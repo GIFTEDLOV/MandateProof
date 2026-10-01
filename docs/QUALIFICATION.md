@@ -1,6 +1,6 @@
 # Studio-dev qualification
 
-Status: preflight complete; one fee-invalid deployment attempt is recorded; corrected deployment retry is separately fee-qualified and still pending.
+Status: replacement-source preflight complete; the original deployment and one live semantic-runtime finding are recorded below; replacement deployment is now authorized by the frozen remediation audit.
 
 ## Preflight facts
 
@@ -13,6 +13,7 @@ Status: preflight complete; one fee-invalid deployment attempt is recorded; corr
 | Network runner | `py-genlayer:latest` resolved to `5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng` |
 | Read-only code schema | PASS; 21 public methods |
 | Local extracted schema | PASS; 21 public methods; SHA-256 `e246b92ebeb97a225760171540a8b73c88478c71620a1ff5fc98a1867d642018` |
+| Frozen final source | commit `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`; contract SHA-256 `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462` |
 | Selected deployer | `deployer` / `0xf39fd6e51aad88ce7596c73fc557cca4cc600c82` |
 | Deployer status | unlocked |
 | Deployer balance | `75561.260810361573380482 GEN` at preflight |
@@ -20,7 +21,7 @@ Status: preflight complete; one fee-invalid deployment attempt is recorded; corr
 | Faucet | not used |
 | Deployment preflight | first CLI attempt omitted a nonzero fee value; corrected explicit fee value is now measured below |
 
-The fee baseline is not a deployment authorization. The measured explicit fee value for the corrected deployment retry is `100000000000010352` wei, below the selected deployer balance. Deployment must broadcast exactly once for the corrected parameters, persist the transaction hash immediately, reconcile that same hash, and require finality, successful execution, contract address, schema readback, and `contract_info` readback.
+The fee baseline is not a deployment authorization. The measured explicit fee value for the replacement deployment is `100000000000010352` wei, below the selected deployer balance. Deployment must broadcast exactly once for the frozen replacement source, persist the transaction hash immediately, reconcile that same hash, and require finality, successful execution, contract address, schema readback, and `contract_info` readback.
 
 ## Historical failed attempt
 
@@ -48,4 +49,6 @@ Controlled semantic proof: PASS for AUTHORIZED, MATERIAL_BREACH, INCONCLUSIVE, p
 
 Network schema proof: PASS.
 
-Live contract proof: pending corrected deployment.
+Original live contract proof: deployment/schema/contract-info PASS; semantic error-path qualification found A-04. The first replacement address finalized a safe `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` result and exposed A-05; it is not the final release address.
+
+Replacement live contract proof: pending deployment.
