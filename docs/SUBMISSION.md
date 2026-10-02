@@ -10,7 +10,7 @@ Exact reviewer path: `contracts/mandate_proof.py` -> `tests/direct` -> `tests/ad
 
 Expected verification outcome: The reviewer can extract a 21-method schema, run 28 direct cases, verify strict artifact identity and state-machine guards, inspect the independent validator path, and confirm that unavailable or mutated evidence never becomes an adverse semantic verdict automatically.
 
-GitHub URL: https://github.com/GIFTEDLOV/MandateProof
+GitHub URL: https://github.com/GIFTEDLOV/MandateProof (release `v1.0.1`)
 
 Contract explorer link: Studio-dev does not expose an explorer URL in its network profile; verify the address and source through the Studio-dev RPC: https://studio-dev.genlayer.com/api.
 
@@ -18,8 +18,8 @@ Deployment details: network `studio-dev`, chain `61997`, RPC `https://studio-dev
 
 Source SHA-256: `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462` (`contracts/mandate_proof.py`); source commit `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`.
 
-Test summary: compile PASS; 28 direct cases PASS; 21 mutation anchors; local schema PASS with 21 public methods; Studio-dev code-to-schema probe PASS with 21 public methods; secret scan PASS.
+Test summary: compile PASS; 28 direct cases PASS; adversarial 9; property 5; semantic 5; executable mutations 21/21 killed; mutation catalog 21 anchors; local and Studio-dev schema 21 methods; provenance/secret checks PASS; exact-head CI green.
 
-Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 3 (A-01 mitigated, A-04/A-05 remediated), Low 2 accepted and documented. Final source parity and Studio-dev schema readback passed.
+Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 5 (A-01/A-04/A-05/A-06 mitigated, A-08 live-proof limitation), Low 3 accepted/documented. Final source parity and Studio-dev schema readback passed.
 
-Known limitations: external HTTPS artifacts must remain available; semantic prose is not consensus state; one appeal round is supported; the integrity-defect appeal basis is a bounded governance claim rather than a cryptographic audit proof.
+Known limitations: external HTTPS artifacts must remain available; the current Studio-dev state has no non-mutating semantic retrieval preflight for a fresh case, so no new live semantic case was broadcast; semantic prose is not consensus state; one appeal round is supported; the integrity-defect appeal basis is a bounded governance claim rather than a cryptographic audit proof.
