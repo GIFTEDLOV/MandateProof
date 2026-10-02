@@ -16,6 +16,10 @@ jobs:
         run: python -m pip install --disable-pip-version-check -r requirements-dev.txt genvm-linter==0.11.0
       - name: Compile contract
         run: python -m compileall -q contracts
+      - name: Prepare pinned direct-test runtime bundle
+        env:
+          MANDATEPROOF_GENVM_VERSION: v0.3.0-rc7
+        run: python scripts/prepare_direct_runtime.py
       - name: Run all 28 direct cases
         run: python scripts/run_direct_tests.py --suite all
       - name: Run direct lifecycle suite
