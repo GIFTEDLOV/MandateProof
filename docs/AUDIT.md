@@ -27,7 +27,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 | Appeals | PASS | One bounded appeal; new snapshot; original adjudication retained; terminal appeal result is canonical. |
 | Error domains | PASS after A-04/A-05 | Deterministic validation errors remain distinct. Nondeterministic retrieval, integrity, size, and model failures normalize to the safe `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` result rather than serializing runner-specific `UserError` objects; structured JSON output is requested for reliable semantic success. |
 | Runtime/schema compatibility | PASS with finding A-01 | Local pinned harness and Studio-dev schema endpoint were both probed; see A-01. |
-| Deployment consequence and value/fee | PASS with qualification record | The first deployment reached schema and contract-info readback; its semantic error path exposed A-04 during live qualification. Replacement deployment remains subject to the frozen-source gates. |
+| Deployment consequence and value/fee | PASS with qualification record | Final deployment `0xf969e99ff7eb05feb6d03a55101f0e97dc60c341ed08eaa4e58588513a4887b1` finalized with successful execution; address, schema, `contract_info`, and exact remote source parity were read back. |
 | Provenance and secret hygiene | PASS | Source SHA and schema artifact recorded; repository secret scan found no credential pattern. |
 
 ## Findings
@@ -39,7 +39,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: POST the source as UTF-8 hex to `https://studio-dev.genlayer.com/api` using JSON-RPC method `gen_getContractSchemaForCode`.
 - Impact: a deployment toolchain that silently substitutes a different runner could fail before contract execution or expose a different import surface.
 - Remediation: source uses the network-supported `py-genlayer:latest` tag, compatibility imports, and a narrow nondeterministic API fallback. Release must repeat schema extraction and deployment simulation against the same network before broadcast.
-- Status: mitigated for release qualification; live deployment still pending.
+- Status: mitigated and verified by final Studio-dev schema/deployment preflight.
 
 ### A-02 — LOW — appeal integrity defects are governance claims
 
@@ -65,7 +65,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: adjudicate a frozen Studio-dev snapshot whose external/model path produces a typed nondeterministic failure under the pre-remediation source.
 - Impact: a safe failure could become consensus-undetermined instead of a canonical safe outcome, preventing finalization and live qualification.
 - Remediation: the hardened source classifies the failure internally and returns the bounded, non-adverse result `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; it also accepts either byte or UTF-8 string web bodies before exact length and SHA-256 verification. The local adversarial and semantic suites pass after the change.
-- Status: remediated in `e2dd07c`; replacement deployment must prove the path live.
+- Status: remediated in `e2dd07c`; final source safely normalizes the path in local and live execution.
 
 ### A-05 - MEDIUM - text response mode was too permissive for live JSON qualification
 
@@ -74,7 +74,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: run the authorized fixture against the `e2dd07c` replacement source using `response_format="text"`.
 - Impact: valid semantic decisions could be conservatively downgraded to `INCONCLUSIVE`, reducing live qualification quality without creating an adverse verdict.
 - Remediation: `b1dfd2a` requests `response_format="json"` and retains the contract-owned exact-key parser; the direct harness bridge serializes only its mock JSON payload to match the pinned decoder. Local semantic and adversarial suites pass.
-- Status: remediated before the final replacement deployment; live authorized proof pending.
+- Status: remediated before final deployment. Final live artifact transport remained unavailable and therefore produced the documented safe `INCONCLUSIVE` outcome; no adverse or authorized claim is inferred from that transport failure.
 
 ## Severity disposition
 
@@ -82,8 +82,8 @@ Critical: 0
 
 High: 0
 
-Medium: 3, A-01 mitigated, A-04 remediated, and A-05 remediated pending final replacement live proof
+Medium: 3, A-01 mitigated, A-04 remediated, and A-05 remediated
 
 Low: 2, A-02 and A-03 accepted and documented
 
-No Critical or High findings remain. A-04 and A-05 were remediated before the final replacement release audit; the replacement source remains frozen until live qualification is complete.
+No Critical or High findings remain. A-04 and A-05 were remediated before the final release; the contract source remains frozen at the audited SHA.

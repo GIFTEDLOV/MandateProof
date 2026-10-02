@@ -1,0 +1,21 @@
+{
+  "project": "MandateProof",
+  "network": "studio-dev",
+  "chain_id": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "runner": "py-genlayer:latest -> 5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
+  "genvm": "v0.3.0-rc7-x86_64-linux-release",
+  "source_commit": "b1dfd2a329d67f55002d4d4a542df7adc13cdf40",
+  "source_sha256": "711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462",
+  "deployment_tx": "0xf969e99ff7eb05feb6d03a55101f0e97dc60c341ed08eaa4e58588513a4887b1",
+  "contract_address": "0xC481670D8CA2703f1e2cD960ad08Ed319937DaAD",
+  "schema_methods": 21,
+  "schema_sha256": "e246b92ebeb97a225760171540a8b73c88478c71620a1ff5fc98a1867d642018",
+  "tests": {"compile":"PASS","direct":28,"adversarial":9,"property":5,"semantic":5,"mutation_anchors":21,"secret_scan":"PASS"},
+  "audit": {"critical":0,"high":0,"medium":3,"low":2,"document":"docs/AUDIT.md"},
+  "live_cases": [
+    {"case_id":"live-c5","action_id":"live-a5","snapshot":"698c56fd44e288807cb471d4a94be69eec23162fb4a2062918828cb8993a7a84","verdict":"INCONCLUSIVE","reason_code":"INSUFFICIENT_EVIDENCE","authorized_read":false,"adjudication_tx":"0x961fc942b25e76cf98ae31648922d33242d8e74abc1a99628ee53a9ccd47059b","finalization_tx":"0x36f599d07c8970e5ba03b6c14800efde4180d90de694cc62b7737d8f7db4de18"},
+    {"case_id":"live-c7","action_id":"live-a7","snapshot":"b3ff118ddfe469f4771a08209839bdf0a3f3404fc0b924ffbab2a233f28b6d58","verdict":"INCONCLUSIVE","reason_code":"INSUFFICIENT_EVIDENCE","authorized_read":false,"adjudication_tx":"0x914f6e73b36815c359e4b468b2562e8ac9b32886057eb51d82643c48771c60a2","finalization_tx":"0xfdbff47bc5efddca4ed7c3dadef9e10effa718e65930740d16b79b8a247c07f9"}
+  ],
+  "known_limitation": "Studio-dev semantic artifact retrieval did not yield the authorized fixture; the contract safely finalized INCONCLUSIVE rather than inferring an adverse verdict. Controlled local fixtures prove all three semantic verdicts."
+}

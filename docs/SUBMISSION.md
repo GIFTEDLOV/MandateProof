@@ -10,16 +10,16 @@ Exact reviewer path: `contracts/mandate_proof.py` -> `tests/direct` -> `tests/ad
 
 Expected verification outcome: The reviewer can extract a 21-method schema, run 28 direct cases, verify strict artifact identity and state-machine guards, inspect the independent validator path, and confirm that unavailable or mutated evidence never becomes an adverse semantic verdict automatically.
 
-GitHub URL: pending repository publication.
+GitHub URL: https://github.com/GIFTEDLOV/MandateProof
 
-Contract explorer link: pending deployment.
+Contract explorer link: Studio-dev does not expose an explorer URL in its network profile; verify the address and source through the Studio-dev RPC: https://studio-dev.genlayer.com/api.
 
-Deployment details: network `studio-dev`, chain `61997`, RPC `https://studio-dev.genlayer.com/api`; deployment transaction and contract address pending.
+Deployment details: network `studio-dev`, chain `61997`, RPC `https://studio-dev.genlayer.com/api`; deployment transaction `0xf969e99ff7eb05feb6d03a55101f0e97dc60c341ed08eaa4e58588513a4887b1`; contract `0xC481670D8CA2703f1e2cD960ad08Ed319937DaAD`.
 
-Source SHA-256: `0ec9129b112eb8af6589c5b163b30e850a89e6400a16a56eb71efbf09f0ab916` (`contracts/mandate_proof.py`).
+Source SHA-256: `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462` (`contracts/mandate_proof.py`); source commit `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`.
 
 Test summary: compile PASS; 28 direct cases PASS; 21 mutation anchors; local schema PASS with 21 public methods; Studio-dev code-to-schema probe PASS with 21 public methods; secret scan PASS.
 
-Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 1 mitigated pending live preflight, Low 2 accepted and documented.
+Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 3 (A-01 mitigated, A-04/A-05 remediated), Low 2 accepted and documented. Final source parity and Studio-dev schema readback passed.
 
 Known limitations: external HTTPS artifacts must remain available; semantic prose is not consensus state; one appeal round is supported; the integrity-defect appeal basis is a bounded governance claim rather than a cryptographic audit proof.
