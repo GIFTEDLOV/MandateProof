@@ -10,7 +10,9 @@ Exact reviewer path: `contracts/mandate_proof.py` -> `tests/direct` -> `tests/ad
 
 Expected verification outcome: The reviewer can extract a 21-method schema, run 28 direct cases, verify strict artifact identity and state-machine guards, inspect the independent validator path, and confirm that unavailable or mutated evidence never becomes an adverse semantic verdict automatically.
 
-GitHub URL: https://github.com/GIFTEDLOV/MandateProof (release `v1.0.1`)
+GitHub URL: https://github.com/GIFTEDLOV/MandateProof
+
+Submission release: `v1.0.3` (to be created after final exact-head CI verification)
 
 Contract explorer link: Studio-dev does not expose an explorer URL in its network profile; verify the address and source through the Studio-dev RPC: https://studio-dev.genlayer.com/api.
 
@@ -18,7 +20,7 @@ Deployment details: network `studio-dev`, chain `61997`, RPC `https://studio-dev
 
 Source SHA-256: `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462` (`contracts/mandate_proof.py`); source commit `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`.
 
-Test summary: compile PASS; 28 direct cases PASS; adversarial 9; property 5; semantic 5; 21/21 defined executable security mutants killed; 0 survived; mutation catalog 21 anchors; local and Studio-dev schema 21 methods; provenance/secret checks PASS; final `release-gates` CI run `36979203533` green.
+Test summary: compile PASS; 28 direct cases PASS; adversarial 9; property 5; semantic 5; 21 defined executable security mutants, 21 executed, 21 killed, 0 survived; mutation catalog 21 anchors; local and Studio-dev schema 21 methods; provenance/secret checks PASS. Exact-head `release-gates` must be green on the final v1.0.3 release target; the exact run ID is recorded in the GitHub Release metadata.
 
 Live proof: existing Studio-dev cases safely finalized `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; no live `AUTHORIZED` or `MATERIAL_BREACH` claim is made. Controlled local proof covers `AUTHORIZED`, `MATERIAL_BREACH`, and `INCONCLUSIVE`.
 
