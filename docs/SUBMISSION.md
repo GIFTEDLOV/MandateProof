@@ -18,8 +18,10 @@ Deployment details: network `studio-dev`, chain `61997`, RPC `https://studio-dev
 
 Source SHA-256: `711ecf20f438ce8126b3833e5ceee696286bf158ab8553fd48b949535209d462` (`contracts/mandate_proof.py`); source commit `b1dfd2a329d67f55002d4d4a542df7adc13cdf40`.
 
-Test summary: compile PASS; 28 direct cases PASS; adversarial 9; property 5; semantic 5; executable mutations 21/21 killed; mutation catalog 21 anchors; local and Studio-dev schema 21 methods; provenance/secret checks PASS; exact-head CI green.
+Test summary: compile PASS; 28 direct cases PASS; adversarial 9; property 5; semantic 5; 21/21 defined executable security mutants killed; 0 survived; mutation catalog 21 anchors; local and Studio-dev schema 21 methods; provenance/secret checks PASS; final `release-gates` CI run `36979203533` green.
 
-Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 5 (A-01/A-04/A-05/A-06 mitigated, A-08 live-proof limitation), Low 3 accepted/documented. Final source parity and Studio-dev schema readback passed.
+Live proof: existing Studio-dev cases safely finalized `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; no live `AUTHORIZED` or `MATERIAL_BREACH` claim is made. Controlled local proof covers `AUTHORIZED`, `MATERIAL_BREACH`, and `INCONCLUSIVE`.
+
+Audit summary: independent audit recorded in `docs/AUDIT.md`; Critical 0, High 0, Medium 5 (A-01 MITIGATED, A-04/A-05/A-06 REMEDIATED, A-08 OPEN / ACCEPTED RELEASE LIMITATION), Low 3 (A-02 ACCEPTED, A-03 HISTORICAL / PARTIALLY REMEDIATED, A-07 ACCEPTED TOOLCHAIN LIMITATION). Final source parity and Studio-dev schema readback passed.
 
 Known limitations: external HTTPS artifacts must remain available; the current Studio-dev state has no non-mutating semantic retrieval preflight for a fresh case, so no new live semantic case was broadcast; semantic prose is not consensus state; one appeal round is supported; the integrity-defect appeal basis is a bounded governance claim rather than a cryptographic audit proof.

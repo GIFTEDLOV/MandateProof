@@ -45,7 +45,7 @@ $py = 'C:\Users\DELL\AppData\Local\Beacon\studionet-stable-harness\venv\Scripts\
 & $py scripts\run_direct_tests.py
 ```
 
-The suite covers deterministic lifecycle rules, authorization and identity substitution, URL/hash/byte bounds, malformed semantic results, prompt injection, unavailable evidence, pagination, snapshot stability, version isolation, terminal immutability, controlled semantic cases, and 21 executable security mutants plus the source-anchor catalog.
+The suite covers deterministic lifecycle rules, authorization and identity substitution, URL/hash/byte bounds, malformed semantic results, prompt injection, unavailable evidence, pagination, snapshot stability, version isolation, terminal immutability, controlled semantic cases, and 21 executable security mutants plus the source-anchor catalog. The release result is 100% of the 21 defined executable security mutants killed; this is not a universal or statistical score from an exhaustive third-party mutation engine.
 
 The local test bridge exists only because the installed `gltest 0.29.2` bootstrap still assumes the legacy `genlayer.py` layout. It adapts the harness to the probed runner without changing production contract code.
 
