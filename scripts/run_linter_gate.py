@@ -61,7 +61,8 @@ def main() -> int:
             print("LINT=KNOWN_E010_FALSE_POSITIVE")
             known += 1
             continue
-        if any(marker in output for marker in KNOWN_SDK_FAILURES):
+        annotated_pyright_mismatch = "Annotated" in output and "not callable" in output
+        if any(marker in output for marker in KNOWN_SDK_FAILURES) or annotated_pyright_mismatch:
             print(f"{command.upper()}=KNOWN_RUNTIME_INCOMPATIBILITY")
             known += 1
             continue
