@@ -11,11 +11,15 @@
   "contract_address": "0xC481670D8CA2703f1e2cD960ad08Ed319937DaAD",
   "schema_methods": 21,
   "schema_sha256": "e246b92ebeb97a225760171540a8b73c88478c71620a1ff5fc98a1867d642018",
-  "tests": {"compile":"PASS","direct":28,"adversarial":9,"property":5,"semantic":5,"mutation_anchors":21,"secret_scan":"PASS"},
-  "audit": {"critical":0,"high":0,"medium":3,"low":2,"document":"docs/AUDIT.md"},
+  "evidence_transport": {"provider":"Vercel","public_base":"https://qualification-evidence.vercel.app","deployment_id":"dpl_ByLp29hxctWQpiixRT2x1Hy679bb","anonymous_http":"PASS","exact_sha256":"PASS"},
+  "tests": {"compile":"PASS","direct":28,"adversarial":9,"property":5,"semantic":5,"mutation_defined":21,"mutation_executed":21,"mutation_killed":21,"mutation_survived":0,"secret_scan":"PASS"},
+  "linter": {"version":"0.11.0","lint":"KNOWN_E010_FALSE_POSITIVE","validate":"KNOWN_RUNTIME_INCOMPATIBILITY","schema":"KNOWN_RUNTIME_INCOMPATIBILITY","typecheck":"KNOWN_RUNTIME_INCOMPATIBILITY"},
+  "audit": {"critical":0,"high":0,"medium":5,"low":3,"document":"docs/AUDIT.md"},
+  "branch_protection": {"default_branch":"master","required_check":"exact-head-ci","force_push_disabled":true,"deletion_disabled":true},
   "live_cases": [
     {"case_id":"live-c5","action_id":"live-a5","snapshot":"698c56fd44e288807cb471d4a94be69eec23162fb4a2062918828cb8993a7a84","verdict":"INCONCLUSIVE","reason_code":"INSUFFICIENT_EVIDENCE","authorized_read":false,"adjudication_tx":"0x961fc942b25e76cf98ae31648922d33242d8e74abc1a99628ee53a9ccd47059b","finalization_tx":"0x36f599d07c8970e5ba03b6c14800efde4180d90de694cc62b7737d8f7db4de18"},
     {"case_id":"live-c7","action_id":"live-a7","snapshot":"b3ff118ddfe469f4771a08209839bdf0a3f3404fc0b924ffbab2a233f28b6d58","verdict":"INCONCLUSIVE","reason_code":"INSUFFICIENT_EVIDENCE","authorized_read":false,"adjudication_tx":"0x914f6e73b36815c359e4b468b2562e8ac9b32886057eb51d82643c48771c60a2","finalization_tx":"0xfdbff47bc5efddca4ed7c3dadef9e10effa718e65930740d16b79b8a247c07f9"}
   ],
-  "known_limitation": "Studio-dev semantic artifact retrieval did not yield the authorized fixture; the contract safely finalized INCONCLUSIVE rather than inferring an adverse verdict. Controlled local fixtures prove all three semantic verdicts."
+  "ci": {"workflow":"exact-head-ci","previous_green_run":"36973769115","required_gates":"compile, direct, adversarial, property, semantic, executable mutations, linter compatibility, provenance"},
+  "known_limitation": "The Vercel artifact transport is public and byte-authenticated, but Studio-dev exposes no non-mutating semantic retrieval preflight for a fresh case. No new live case was broadcast; existing live cases safely finalized INCONCLUSIVE. Controlled local fixtures prove all three semantic verdicts."
 }

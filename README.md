@@ -45,13 +45,13 @@ $py = 'C:\Users\DELL\AppData\Local\Beacon\studionet-stable-harness\venv\Scripts\
 & $py scripts\run_direct_tests.py
 ```
 
-The suite covers deterministic lifecycle rules, authorization and identity substitution, URL/hash/byte bounds, malformed semantic results, prompt injection, unavailable evidence, pagination, snapshot stability, version isolation, terminal immutability, controlled semantic cases, and 21 security mutation anchors.
+The suite covers deterministic lifecycle rules, authorization and identity substitution, URL/hash/byte bounds, malformed semantic results, prompt injection, unavailable evidence, pagination, snapshot stability, version isolation, terminal immutability, controlled semantic cases, and 21 executable security mutants plus the source-anchor catalog.
 
 The local test bridge exists only because the installed `gltest 0.29.2` bootstrap still assumes the legacy `genlayer.py` layout. It adapts the harness to the probed runner without changing production contract code.
 
 ## Release and live proof
 
-Deployment is deliberately separate from local proof. The release process freezes the source SHA, extracts the schema, performs read-only Studio-dev preflight, estimates fees, broadcasts once, reconciles the same transaction hash, checks finality and execution success, and reads back schema and `contract_info`. Live qualification records preconditions, transaction hashes, verdicts, source parity, and known limitations in [docs/SUBMISSION.md](docs/SUBMISSION.md).
+Deployment is deliberately separate from local proof. The release process freezes the source SHA, extracts the schema, performs read-only Studio-dev preflight, estimates fees, broadcasts once, reconciles the same transaction hash, checks finality and execution success, and reads back schema and `contract_info`. Live qualification records preconditions, transaction hashes, verdicts, source parity, and known limitations in [docs/SUBMISSION.md](docs/SUBMISSION.md). A dedicated anonymous Vercel static transport is independently verified for exact bytes, but no new case is broadcast when Studio-dev lacks a non-mutating semantic retrieval preflight.
 
 ## Known limitations
 

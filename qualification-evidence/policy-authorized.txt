@@ -1,0 +1,2 @@
+Mandate purpose: approve routine invoices under 1000 units.
+RULE_1: the invoice must be routine and within the amount limit.

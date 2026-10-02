@@ -1,0 +1,1 @@
+Trace: amount=9000 exceeded RULE_1 and approval was recorded anyway.

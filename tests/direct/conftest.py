@@ -299,8 +299,12 @@ def env_session():
     vm = VMContext()
     vm.sender = hashlib.sha256(b"owner").digest()[:20]
     with vm.activate():
-        contract = loader.deploy_contract(
+        contract_path = os.environ.get(
+            "MANDATEPROOF_CONTRACT_PATH",
             os.path.join(os.getcwd(), "contracts", "mandate_proof.py"),
+        )
+        contract = loader.deploy_contract(
+            contract_path,
             vm,
             sdk_version="v0.3.0-rc7",
         )

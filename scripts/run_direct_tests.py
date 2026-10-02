@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 import inspect
+import argparse
 from pathlib import Path
 
 
@@ -25,9 +26,21 @@ properties = load("mandateproof_properties", ROOT / "tests" / "property" / "test
 semantic = load("mandateproof_semantic", ROOT / "tests" / "semantic" / "test_semantic_fixtures.py")
 mutations = load("mandateproof_mutations", ROOT / "tests" / "mutation" / "test_mutation_catalog.py")
 
+modules = {
+    "direct": (suite,),
+    "adversarial": (adversarial,),
+    "property": (properties,),
+    "semantic": (semantic,),
+    "mutation": (mutations,),
+    "all": (suite, adversarial, properties, semantic, mutations),
+}
+parser = argparse.ArgumentParser()
+parser.add_argument("--suite", choices=tuple(modules), default="all")
+args = parser.parse_args()
+
 passed = 0
 failed = []
-for module in (suite, adversarial, properties, semantic, mutations):
+for module in modules[args.suite]:
     for name in sorted(dir(module)):
         if not name.startswith("test_"):
             continue
@@ -45,6 +58,6 @@ for module in (suite, adversarial, properties, semantic, mutations):
             print(f"FAIL {label}: {type(exc).__name__}: {exc}")
             failed.append(label)
 
-print(f"DIRECT_TESTS passed={passed} failed={len(failed)} total={passed + len(failed)}")
+print(f"DIRECT_TESTS suite={args.suite} passed={passed} failed={len(failed)} total={passed + len(failed)}")
 if failed:
     raise SystemExit(1)

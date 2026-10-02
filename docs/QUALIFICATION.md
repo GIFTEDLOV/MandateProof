@@ -2,6 +2,21 @@
 
 Status: final source deployed and live-qualified on Studio-dev. The canonical final-address fixtures safely resolved to `INCONCLUSIVE / INSUFFICIENT_EVIDENCE` because the external artifact transport was unavailable to the semantic runner; no result was retried or rewritten. Local controlled semantic proof covers all three verdicts.
 
+## Qualification transport
+
+A dedicated anonymous static Vercel deployment was created for qualification artifacts. The public alias is `https://qualification-evidence.vercel.app`; the unique deployment URL is protected by Vercel deployment protection and is not used as contract transport. Independent HTTP checks against the public alias returned status 200 and exact byte/hash matches for all six artifacts:
+
+| Artifact | Bytes | SHA-256 |
+|---|---:|---|
+| `policy-authorized.txt` | 125 | `a3b563e06a7d905d4d1ca991273568fb52aa4c1cbd3c768bc2d64eefd052c0bd` |
+| `action-authorized.txt` | 54 | `3b451827d69d9e22258d3be72094472dcd38b38db6beb0f89dc304ac85bf69c2` |
+| `trace-authorized.txt` | 65 | `725be05a39e856b87e65788dc71a35bd598af2a88ea845323b879b14c14bef70` |
+| `policy-breach.txt` | 125 | `a3b563e06a7d905d4d1ca991273568fb52aa4c1cbd3c768bc2d64eefd052c0bd` |
+| `action-breach.txt` | 72 | `17aafa2e7606edf4b2e479f4b17bfd85b7c8c9a0f24ee3f98f7561f7a5b2a7f9` |
+| `trace-breach.txt` | 69 | `fe2a9bea67de116b69517d5abee4cf947c51b67c3cc48d84b82238d8cb71bcb9` |
+
+The available read-only Studio-dev simulation path was also exercised against an existing terminal case. It correctly stopped at deterministic lifecycle validation before semantic retrieval; it cannot create a fresh frozen state without a write. Per release policy, no new live case was created because a non-mutating semantic retrieval preflight was unavailable. The existing safe `INCONCLUSIVE` live proof is preserved.
+
 ## Preflight facts
 
 | Check | Result |

@@ -76,14 +76,41 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Remediation: `b1dfd2a` requests `response_format="json"` and retains the contract-owned exact-key parser; the direct harness bridge serializes only its mock JSON payload to match the pinned decoder. Local semantic and adversarial suites pass.
 - Status: remediated before final deployment. Final live artifact transport remained unavailable and therefore produced the documented safe `INCONCLUSIVE` outcome; no adverse or authorized claim is inferred from that transport failure.
 
+### A-06 - MEDIUM - CI did not execute the release gates
+
+- Subsystem: release engineering.
+- Evidence: the prior workflow ran only compile and the source-anchor mutation catalog; it did not run the 28-case direct runner, category suites, executable mutations, provenance checks, or linter commands.
+- Reproduction: inspect the pre-remediation `.github/workflows/ci.yml` at the v1.0.0 release head.
+- Impact: a green CI result did not demonstrate the documented release test matrix.
+- Remediation: CI now installs the pinned development toolchain, runs all 28 direct cases and each category suite, executes 21 isolated mutants, runs the linter compatibility gate, and verifies release provenance.
+- Status: REMEDIATED.
+
+### A-07 - LOW - current genvm-linter artifact bundle is incompatible with Studio-dev runner
+
+- Subsystem: static analysis/toolchain.
+- Evidence: `genvm-linter 0.11.0` runs, but reports only the known indirect-equivalence E010 warnings for the contract; validate, schema, and typecheck fail to load `py-genlayer` from the linter release bundle.
+- Reproduction: run `python scripts/run_linter_gate.py` with the current source and toolchain.
+- Impact: linter SDK-based validation cannot independently reproduce the Studio-dev schema in this environment.
+- Remediation: CI records the limitation explicitly; authoritative schema validation remains the local pinned harness plus Studio-dev `gen_getContractSchemaForCode`, both of which return 21 methods. No contract semantics were changed to silence E010.
+- Status: ACCEPTED toolchain limitation; monitor for a linter release containing the current runner.
+
+### A-08 - MEDIUM - no non-mutating Studio-dev semantic retrieval preflight exists for terminal-only state
+
+- Subsystem: live semantic qualification.
+- Evidence: the public Vercel alias returns exact static bytes with HTTP 200 and matching hashes. The available Studio-dev write simulation against existing cases fails deterministically at `INVALID_ADJUDICATION_STATE` because all existing cases are terminal; it cannot exercise `gl.nondet.web.get` without a fresh frozen case.
+- Reproduction: run the documented `genlayer estimate-fees ... adjudicate_case --args live-c7` simulation and inspect the deterministic lifecycle error.
+- Impact: a fresh live `AUTHORIZED` or `MATERIAL_BREACH` semantic result cannot be proven without broadcasting a new case lifecycle write.
+- Remediation: do not create a new case under uncertain preflight. Preserve the existing safe live `INCONCLUSIVE` result and distinguish it from controlled local semantic proof.
+- Status: OPEN limitation for live proof; no contract-source defect established.
+
 ## Severity disposition
 
 Critical: 0
 
 High: 0
 
-Medium: 3, A-01 mitigated, A-04 remediated, and A-05 remediated
+Medium: 5, A-01 mitigated, A-04 remediated, A-05 remediated, A-06 remediated, A-08 open limitation
 
-Low: 2, A-02 and A-03 accepted and documented
+Low: 3, A-02, A-03, and A-07 accepted and documented
 
-No Critical or High findings remain. A-04 and A-05 were remediated before the final release; the contract source remains frozen at the audited SHA.
+No Critical or High findings remain. A-04, A-05, and A-06 were remediated without changing the deployed contract source. A-08 remains a documented qualification limitation.
