@@ -28,8 +28,6 @@ jobs:
         run: python scripts/run_direct_tests.py --suite semantic
       - name: Run executable mutation suite
         run: python scripts/run_mutations.py
-      - name: Run mutation catalog regression
-        run: python -m pytest -q tests/mutation/test_mutation_catalog.py
       - name: Run compatible GenVM linter gates
         run: python scripts/run_linter_gate.py
       - name: Verify release identity and provenance

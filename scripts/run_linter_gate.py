@@ -13,6 +13,7 @@ import json
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 
 COMMANDS = ("lint", "validate", "schema", "typecheck")
@@ -22,6 +23,14 @@ def executable() -> str:
     found = shutil.which("genvm-lint")
     if found:
         return found
+    candidates = (
+        Path(sys.executable).parent / "Scripts" / "genvm-lint.exe",
+        Path(sys.executable).parent / "Scripts" / "genvm-lint",
+        Path(sys.executable).parent / "bin" / "genvm-lint",
+    )
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
     return "genvm-lint"
 
 
