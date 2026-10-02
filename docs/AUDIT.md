@@ -39,7 +39,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: POST the source as UTF-8 hex to `https://studio-dev.genlayer.com/api` using JSON-RPC method `gen_getContractSchemaForCode`.
 - Impact: a deployment toolchain that silently substitutes a different runner could fail before contract execution or expose a different import surface.
 - Remediation: source uses the network-supported `py-genlayer:latest` tag, compatibility imports, and a narrow nondeterministic API fallback. Release must repeat schema extraction and deployment simulation against the same network before broadcast.
-- Status: mitigated and verified by final Studio-dev schema/deployment preflight.
+- Status: MITIGATED and verified by final Studio-dev schema/deployment preflight.
 
 ### A-02 — LOW — appeal integrity defects are governance claims
 
@@ -48,15 +48,15 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: an authorized case party can submit a permitted defect code after the original adjudication.
 - Impact: the appeal path is permissioned but not a cryptographic proof system for the defect claim.
 - Remediation: retain the original immutable snapshot and require the bounded defect code; for stronger governance, a future version can bind a signed audit artifact without changing this contract’s one-round rule.
-- Status: accepted design limitation; it cannot cause automatic adverse semantics and does not overwrite the original result.
+- Status: ACCEPTED design limitation; it cannot cause automatic adverse semantics and does not overwrite the original result.
 
 ### A-03 — LOW — mutation suite is source-anchor based
 
 - Subsystem: testing.
-- Evidence: the mutation test asserts 21 deliberate security anchors, but does not invoke a third-party mutation engine to generate and execute every mutant.
+- Evidence: the original v1.0.0 mutation test asserted 21 deliberate security anchors, but did not invoke a third-party mutation engine to generate and execute every mutant. The v1.0.1 release adds an executable harness that materializes and runs all 21 defined mutants in isolation.
 - Impact: mutation adequacy is a regression guard, not statistical mutation score.
-- Remediation: run an external mutation engine in a future CI expansion if its GenVM process isolation is reliable.
-- Status: accepted for the time-boxed release; explicit in `docs/TEST_MATRIX.md`.
+- Remediation: v1.0.1 added `scripts/run_mutations.py`; it executed 21/21 defined mutants and killed 21/21. A third-party exhaustive mutation engine remains future work if reliable GenVM process isolation becomes available.
+- Status: HISTORICAL / PARTIALLY REMEDIATED by the executable mutation harness; the remaining third-party tooling limitation is accepted and explicit in `docs/TEST_MATRIX.md`.
 
 ### A-04 - MEDIUM - serialized UserError incompatibility on semantic failure path
 
@@ -65,7 +65,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: adjudicate a frozen Studio-dev snapshot whose external/model path produces a typed nondeterministic failure under the pre-remediation source.
 - Impact: a safe failure could become consensus-undetermined instead of a canonical safe outcome, preventing finalization and live qualification.
 - Remediation: the hardened source classifies the failure internally and returns the bounded, non-adverse result `INCONCLUSIVE / INSUFFICIENT_EVIDENCE`; it also accepts either byte or UTF-8 string web bodies before exact length and SHA-256 verification. The local adversarial and semantic suites pass after the change.
-- Status: remediated in `e2dd07c`; final source safely normalizes the path in local and live execution.
+- Status: REMEDIATED in `e2dd07c`; final source safely normalizes the path in local and live execution.
 
 ### A-05 - MEDIUM - text response mode was too permissive for live JSON qualification
 
@@ -74,7 +74,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: run the authorized fixture against the `e2dd07c` replacement source using `response_format="text"`.
 - Impact: valid semantic decisions could be conservatively downgraded to `INCONCLUSIVE`, reducing live qualification quality without creating an adverse verdict.
 - Remediation: `b1dfd2a` requests `response_format="json"` and retains the contract-owned exact-key parser; the direct harness bridge serializes only its mock JSON payload to match the pinned decoder. Local semantic and adversarial suites pass.
-- Status: remediated before final deployment. Final live artifact transport remained unavailable and therefore produced the documented safe `INCONCLUSIVE` outcome; no adverse or authorized claim is inferred from that transport failure.
+- Status: REMEDIATED before final deployment. Final live artifact transport remained unavailable and therefore produced the documented safe `INCONCLUSIVE` outcome; no adverse or authorized claim is inferred from that transport failure.
 
 ### A-06 - MEDIUM - CI did not execute the release gates
 
@@ -101,7 +101,7 @@ This is the post-qualification remediation audit. The contract source was frozen
 - Reproduction: run the documented `genlayer estimate-fees ... adjudicate_case --args live-c7` simulation and inspect the deterministic lifecycle error.
 - Impact: a fresh live `AUTHORIZED` or `MATERIAL_BREACH` semantic result cannot be proven without broadcasting a new case lifecycle write.
 - Remediation: do not create a new case under uncertain preflight. Preserve the existing safe live `INCONCLUSIVE` result and distinguish it from controlled local semantic proof.
-- Status: OPEN limitation for live proof; no contract-source defect established.
+- Status: OPEN / ACCEPTED RELEASE LIMITATION for live proof; no contract-source defect established.
 
 ## Severity disposition
 
@@ -109,8 +109,8 @@ Critical: 0
 
 High: 0
 
-Medium: 5, A-01 mitigated, A-04 remediated, A-05 remediated, A-06 remediated, A-08 open limitation
+Medium: 5, A-01 MITIGATED, A-04 REMEDIATED, A-05 REMEDIATED, A-06 REMEDIATED, A-08 OPEN / ACCEPTED RELEASE LIMITATION
 
-Low: 3, A-02, A-03, and A-07 accepted and documented
+Low: 3, A-02 ACCEPTED, A-03 HISTORICAL / PARTIALLY REMEDIATED, and A-07 ACCEPTED TOOLCHAIN LIMITATION
 
 No Critical or High findings remain. A-04, A-05, and A-06 were remediated without changing the deployed contract source. A-08 remains a documented qualification limitation.
