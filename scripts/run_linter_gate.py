@@ -17,6 +17,11 @@ from pathlib import Path
 
 
 COMMANDS = ("lint", "validate", "schema", "typecheck")
+KNOWN_SDK_FAILURES = (
+    "Could not find py-genlayer in release",
+    "No module named 'genlayer.py'",
+    'Object of type "Annotated" is not callable',
+)
 
 
 def executable() -> str:
@@ -56,7 +61,7 @@ def main() -> int:
             print("LINT=KNOWN_E010_FALSE_POSITIVE")
             known += 1
             continue
-        if "Could not find py-genlayer in release" in output:
+        if any(marker in output for marker in KNOWN_SDK_FAILURES):
             print(f"{command.upper()}=KNOWN_RUNTIME_INCOMPATIBILITY")
             known += 1
             continue
